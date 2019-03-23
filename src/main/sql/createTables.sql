@@ -1,4 +1,4 @@
-use lenasrpg01;
+use test01;
 
 CREATE TABLE characters (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -7,7 +7,7 @@ CREATE TABLE characters (
 
 CREATE TABLE character_properties (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    character_id INT NOT NULL FOREIGN KEY REFERENCES characters(id),
+    character_id INT NOT NULL,
     property VARCHAR(255) NOT NULL,
     content VARCHAR(255),
     ts_creation BIGINT NOT NULL

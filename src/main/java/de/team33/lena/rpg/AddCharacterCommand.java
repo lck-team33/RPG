@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AddCharacterCommand implements Runnable {
 
@@ -38,10 +39,22 @@ public class AddCharacterCommand implements Runnable {
     }
 
     private void saveCharacter(Map<String, String> properties) {
+        final String id = UUID.randomUUID().toString();
         Database.JDBI.inTransaction(handle -> {
-            handle.createUpdate("INSERT INTO characters (ts_creation) VALUES(:ts)")
+            handle.createUpdate("INSERT INTO characters (id, ts_creation) VALUES(:id, :ts)")
+                    .bind("id", id)
                     .bind("ts", System.currentTimeMillis())
                     .execute();
+
+            for(Map.Entry<String, String> entry : properties.entrySet()){
+                handle.createUpdate("INSERT INTO character_properties (character_id, property, content, ts_creation) VALUES(:id, :property, :content, :ts)")
+                        .bind("id", id)
+                        .bind("property", entry.getKey())
+                        .bind("content", entry.getValue())
+                        .bind("ts", System.currentTimeMillis())
+                        .execute();
+            }
+
             return null;
         });
     }

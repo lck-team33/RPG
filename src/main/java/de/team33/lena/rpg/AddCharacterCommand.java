@@ -1,5 +1,7 @@
 package de.team33.lena.rpg;
 
+import org.jdbi.v3.core.Handle;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,22 +42,31 @@ public class AddCharacterCommand implements Runnable {
 
     private void saveCharacter(Map<String, String> properties) {
         final String id = UUID.randomUUID().toString();
-        Database.JDBI.inTransaction(handle -> {
-            handle.createUpdate("INSERT INTO characters (id, ts_creation) VALUES(:id, :ts)")
-                    .bind("id", id)
-                    .bind("ts", System.currentTimeMillis())
-                    .execute();
+        Database.JDBI.inTransaction(handle -> insertCharacter(handle, id, properties));
+    }
 
-            for(Map.Entry<String, String> entry : properties.entrySet()){
-                handle.createUpdate("INSERT INTO character_properties (character_id, property, content, ts_creation) VALUES(:id, :property, :content, :ts)")
-                        .bind("id", id)
-                        .bind("property", entry.getKey())
-                        .bind("content", entry.getValue())
-                        .bind("ts", System.currentTimeMillis())
-                        .execute();
-            }
+    private Object insertCharacter(Handle handle, String id, Map<String, String> properties) {
+        insertCharacterAnchor(handle, id);
+        for(Map.Entry<String, String> entry : properties.entrySet()){
+            insertProperty(handle, id, entry);
+        }
+        return null;
+    }
 
-            return null;
-        });
+    private void insertCharacterAnchor(Handle handle, String id) {
+        handle.createUpdate("INSERT INTO characters (id, ts_creation) VALUES(:id, :ts)")
+                .bind("id", id)
+                .bind("ts", System.currentTimeMillis())
+                .execute();
+    }
+
+    private void insertProperty(Handle handle, String id, Map.Entry<String, String> entry) {
+        handle.createUpdate("INSERT INTO character_properties (character_id, property, content, ts_creation)" +
+                " VALUES(:id, :property, :content, :ts)")
+                .bind("id", id)
+                .bind("property", entry.getKey())
+                .bind("content", entry.getValue())
+                .bind("ts", System.currentTimeMillis())
+                .execute();
     }
 }

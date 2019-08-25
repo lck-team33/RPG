@@ -12,17 +12,6 @@ public class Config {
         return new Config();
     }
 
-    public final DataSource getDataSource() {
-        try {
-            //noinspection unchecked
-            final Function<Config, DataSource> dataSourceFactory =
-                    (Function<Config, DataSource>) Class.forName(dataSourceFactoryName).newInstance();
-            return dataSourceFactory.apply(this);
-        } catch (final Exception caught) {
-            throw new IllegalStateException("Cannot get an instance of " + dataSourceFactoryName);
-        }
-    }
-
     public final String getDBHost() {
         return "localhost";
     }
@@ -37,5 +26,9 @@ public class Config {
 
     public final String getPassword() {
         return null;
+    }
+
+    public String getDataSourceFactoryName() {
+        return dataSourceFactoryName;
     }
 }

@@ -11,6 +11,8 @@ import java.util.UUID;
 
 public class AddCharacterCommand implements Runnable {
 
+    private static final StorageService STORAGE_SERVICE = new JdbiStorageService();
+
     private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     private final Map<String, String> properties = new LinkedHashMap<>();
 
@@ -33,40 +35,11 @@ public class AddCharacterCommand implements Runnable {
 
             properties.forEach((key, value) -> System.out.printf("key: %s, value: %s%n", key, value));
 
-            saveCharacter(properties);
+            final String id = STORAGE_SERVICE.insertCharacter(properties);
+            System.out.println("Neue ID des Characters: " + id);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void saveCharacter(Map<String, String> properties) {
-        final String id = UUID.randomUUID().toString();
-        Database.JDBI.inTransaction(handle -> insertCharacter(handle, id, properties));
-    }
-
-    private Object insertCharacter(Handle handle, String id, Map<String, String> properties) {
-        insertCharacterAnchor(handle, id);
-        for(Map.Entry<String, String> entry : properties.entrySet()){
-            insertProperty(handle, id, entry);
-        }
-        return null;
-    }
-
-    private void insertCharacterAnchor(Handle handle, String id) {
-        handle.createUpdate("INSERT INTO characters (id, ts_creation) VALUES(:id, :ts)")
-                .bind("id", id)
-                .bind("ts", System.currentTimeMillis())
-                .execute();
-    }
-
-    private void insertProperty(Handle handle, String id, Map.Entry<String, String> entry) {
-        handle.createUpdate("INSERT INTO character_properties (character_id, property, content, ts_creation)" +
-                " VALUES(:id, :property, :content, :ts)")
-                .bind("id", id)
-                .bind("property", entry.getKey())
-                .bind("content", entry.getValue())
-                .bind("ts", System.currentTimeMillis())
-                .execute();
     }
 }

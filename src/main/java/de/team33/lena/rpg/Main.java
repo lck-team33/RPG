@@ -1,6 +1,7 @@
 package de.team33.lena.rpg;
 
 public class Main {
+
     public static void main (String[] args){
         if(args.length == 2) {
             String command = (args[0] + "_" + args[1]).toUpperCase();

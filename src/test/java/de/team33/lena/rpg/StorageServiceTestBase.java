@@ -19,6 +19,6 @@ public abstract class StorageServiceTestBase {
         assertNotNull(id);
         // TODO:
         // Lese character mit id aus der Storage und vergleiche mit den Erwartungswerten
-        final RpgCharacter character = getStorageService().getCharacter(id);
+        // final RpgCharacter character = getStorageService().getCharacter(id);
     }
 }

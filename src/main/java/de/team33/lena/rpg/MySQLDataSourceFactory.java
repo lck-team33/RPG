@@ -10,6 +10,7 @@ public class MySQLDataSourceFactory implements Function<Config, DataSource> {
 
     @Override
     public DataSource apply(final Config config) {
+        // properties map oder so
         MysqlDataSource result = new MysqlDataSource();
         result.setUrl("jdbc:mysql://" + config.getDBHost() + "/" + config.getDBScheme() + "?serverTimezone=UTC");
         result.setUser(config.getUsername());

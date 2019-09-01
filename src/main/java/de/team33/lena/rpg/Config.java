@@ -13,6 +13,7 @@ public class Config {
     }
 
     public final String getDBHost() {
+        // properties map oder so
         return "localhost";
     }
 

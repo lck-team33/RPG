@@ -1,4 +1,4 @@
-use test01;
+use rpgdb01;
 
 CREATE TABLE characters (
     id VARCHAR(36) NOT NULL PRIMARY KEY,

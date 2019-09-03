@@ -14,19 +14,19 @@ public class Config {
 
     public final String getDBHost() {
         // properties map oder so
-        return "localhost";
+        return "host5.team33.de";
     }
 
     public final String getDBScheme() {
-        return "test01";
+        return "rpgdb01";
     }
 
     public final String getUsername() {
-        return "root";
+        return "rpgdb";
     }
 
     public final String getPassword() {
-        return null;
+        return ";aSk*^sH6b";
     }
 
     public String getDataSourceFactoryName() {

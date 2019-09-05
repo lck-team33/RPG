@@ -1,35 +1,22 @@
 package de.team33.lena.rpg;
 
-import javax.sql.DataSource;
-import java.util.function.Function;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 public class Config {
 
-    private final String dataSourceFactoryName = "de.team33.lena.rpg.MySQLDataSourceFactory";
-
-    public static Config read() {
-        // TODO: read a config file
-        return new Config();
-    }
-
-    public final String getDBHost() {
-        // properties map oder so
-        return "host5.team33.de";
-    }
-
-    public final String getDBScheme() {
-        return "rpgdb01";
-    }
-
-    public final String getUsername() {
-        return "rpgdb";
-    }
-
-    public final String getPassword() {
-        return ";aSk*^sH6b";
-    }
-
-    public String getDataSourceFactoryName() {
-        return dataSourceFactoryName;
+    public static Map<String, String> read(String configName) {
+        File file = new File("src/main/java/de/team33/lena/rpg/ressources/config.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Map<String, String>> configs = null;
+        try {
+            configs = objectMapper.readValue(file, Map.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return configs.get(configName);
     }
 }

@@ -1,0 +1,16 @@
+{
+  "mySQL01": {
+      "dataSourceFactoryName": "de.team33.lena.rpg.MySQLDataSourceFactory",
+      "dbHost": "host5.team33.de",
+      "dbScheme": "rpgdb01",
+      "username": "rpgdb",
+      "password": ";aSk*^sH6b"
+    },
+  "postgreSQL01": {
+    "dataSourceFactoryName": "de.team33.lena.rpg.MySQLDataSourceFactory",
+    "dbHost": "host5.team33.de",
+    "dbScheme": "rpgdb01",
+    "username": "rpgdb",
+    "password": ";aSk*^sH6b"
+  }
+}

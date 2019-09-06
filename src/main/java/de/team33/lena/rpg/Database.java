@@ -12,6 +12,7 @@ public class Database {
 
     private static DataSource newDataSource() {
         final Map<String, String> config = Config.read("mySQL01");
+        //final Map<String, String> config = Config.read("postgreSQL01");
         // wenn config jetzt leer ist, dann ist was schiefgelaufen... was tun?
 
         final String dataSourceFactoryName = config.get("dataSourceFactoryName");

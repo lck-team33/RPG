@@ -7,10 +7,11 @@
       "password": ";aSk*^sH6b"
     },
   "postgreSQL01": {
-    "dataSourceFactoryName": "de.team33.lena.rpg.MySQLDataSourceFactory",
+    "dataSourceFactoryName": "de.team33.lena.rpg.PostgreSQLDataSourceFactory",
     "dbHost": "host5.team33.de",
+    "port": "5432",
     "dbScheme": "rpgdb01",
     "username": "rpgdb",
-    "password": ";aSk*^sH6b"
+    "password": "rpgdb"
   }
 }

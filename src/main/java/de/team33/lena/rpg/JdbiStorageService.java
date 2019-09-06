@@ -1,17 +1,16 @@
 package de.team33.lena.rpg;
 
+import de.team33.lena.rpg.model.RpgCharacter;
 import org.jdbi.v3.core.Handle;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class JdbiStorageService implements StorageService {
 
     @Override
-    public String insertCharacter(final Map<String, String> properties) {
-        final String id = UUID.randomUUID().toString();
-        Database.JDBI.inTransaction(handle -> insertCharacter(handle, id, properties));
-        return id;
+    public String insertCharacter(final RpgCharacter character) {
+        Database.JDBI.inTransaction(handle -> insertCharacter(handle, character.getId(), character.getProperties()));
+        return character.getId();
     }
 
     private Object insertCharacter(Handle handle, String id, Map<String, String> properties) {
@@ -19,7 +18,7 @@ public class JdbiStorageService implements StorageService {
         for(Map.Entry<String, String> entry : properties.entrySet()){
             insertProperty(handle, id, entry);
         }
-        return null;
+        return null; // why? D:
     }
 
     private void insertCharacterAnchor(Handle handle, String id) {

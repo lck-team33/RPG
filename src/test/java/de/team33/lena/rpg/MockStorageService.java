@@ -1,17 +1,17 @@
 package de.team33.lena.rpg;
 
+import de.team33.lena.rpg.model.RpgCharacter;
+
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 
 public class MockStorageService implements StorageService {
 
-    private final Map<String, Map<String, String>> backing = new TreeMap<>();
+    private final Map<String, RpgCharacter> backing = new TreeMap<>();
 
     @Override
-    public String insertCharacter(final Map<String, String> properties) {
-        final String id = UUID.randomUUID().toString();
-        backing.put(id, new TreeMap<>(properties));
-        return id;
+    public String insertCharacter(RpgCharacter character) {
+        backing.put(character.getId(), character);
+        return null;
     }
 }

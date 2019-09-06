@@ -3,11 +3,22 @@ package de.team33.lena.rpg.model;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
 
 public class RpgCharacter {
 
     private String id;
     private Map<String, String> properties;
+
+    public RpgCharacter(){
+        this.properties = new TreeMap<>();
+        this.id = UUID.randomUUID().toString();
+    }
+
+    public RpgCharacter(Map<String, String> properties, String id){
+        this.properties = new TreeMap<>(properties);
+        this.id = id;
+    }
 
     public String getId() {
         return id;

@@ -1,20 +1,18 @@
 package de.team33.lena.rpg;
 
-import org.jdbi.v3.core.Handle;
+import de.team33.lena.rpg.model.RpgCharacter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.TreeMap;
 
 public class AddCharacterCommand implements Runnable {
 
     private static final StorageService STORAGE_SERVICE = new JdbiStorageService();
 
     private final BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    private final Map<String, String> properties = new LinkedHashMap<>();
+    private final RpgCharacter character = new RpgCharacter();
 
     @Override
     public void run() {
@@ -30,12 +28,12 @@ public class AddCharacterCommand implements Runnable {
                 if (property.isEmpty()) break;
                 System.out.println("Inhalt der Eigenschaft: ");
                 String content = in.readLine();
-                properties.put(property, content);
+                character.addProperty(property, content);
             }
 
-            properties.forEach((key, value) -> System.out.printf("key: %s, value: %s%n", key, value));
+            character.getProperties().forEach((key, value) -> System.out.printf("key: %s, value: %s%n", key, value));
 
-            final String id = STORAGE_SERVICE.insertCharacter(properties);
+            final String id = STORAGE_SERVICE.insertCharacter(character);
             System.out.println("Neue ID des Characters: " + id);
 
         } catch (IOException e) {

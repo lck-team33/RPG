@@ -1,8 +1,8 @@
 package de.team33.lena.rpg;
 
-import java.util.Map;
+import de.team33.lena.rpg.model.RpgCharacter;
 
 public interface StorageService {
 
-    String insertCharacter(Map<String, String> properties);
+    String insertCharacter(RpgCharacter character);
 }

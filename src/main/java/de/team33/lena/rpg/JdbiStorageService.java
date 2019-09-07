@@ -3,7 +3,8 @@ package de.team33.lena.rpg;
 import de.team33.lena.rpg.model.RpgCharacter;
 import org.jdbi.v3.core.Handle;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class JdbiStorageService implements StorageService {
 
@@ -36,5 +37,39 @@ public class JdbiStorageService implements StorageService {
                 .bind("content", entry.getValue())
                 .bind("ts", System.currentTimeMillis())
                 .execute();
+    }
+
+    @Override
+    public List<RpgCharacter> getCharacters(String key, String value) {
+        return Database.JDBI.inTransaction(handle -> getCharacterIDsByKeyAndValue(handle, key, value)); //besserer Name? D:
+    }
+
+    private List<RpgCharacter> getCharacterIDsByKeyAndValue(Handle handle, String key, String value) {
+        List<RpgCharacter> characterList = new ArrayList<>();
+        handle.createQuery("SELECT character_id FROM character_properties WHERE property = :key AND content = :value")
+                .bind("key", key)
+                .bind("value", value)
+                .mapTo(String.class)
+                .stream()
+                .distinct()
+                .forEach(id -> characterList.add(getCharacterByID(id)));
+        return characterList;
+    }
+
+    private RpgCharacter getCharacterByID(String id) {
+        return Database.JDBI.inTransaction(handle -> getCharacterByID(handle, id)); //besserer Name? D:
+    }
+
+    private RpgCharacter getCharacterByID(Handle handle, String id){
+
+        Map<String, String> properties = new TreeMap<>();
+
+        handle.createQuery("SELECT property, content FROM character_properties WHERE character_id = :id")
+                .bind("id", id)
+                .mapToMap(String.class)
+                .stream()
+                .forEach(propertyPair -> properties.put(propertyPair.get("property"), propertyPair.get("content")));
+
+        return new RpgCharacter(properties, id);
     }
 }

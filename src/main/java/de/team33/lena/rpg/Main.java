@@ -16,7 +16,8 @@ public class Main {
 
     private enum Command {
 
-        ADD_CHARACTER(new AddCharacterCommand());
+        ADD_CHARACTER(new AddCharacterCommand()),
+        GET_CHARACTERS(new GetCharactersCommand());
 
         private final Runnable impl;
 

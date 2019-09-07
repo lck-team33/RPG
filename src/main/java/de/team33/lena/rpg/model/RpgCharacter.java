@@ -42,4 +42,10 @@ public class RpgCharacter {
         this.properties = new TreeMap<>(properties);
         return this;
     }
+
+    public void print() {
+        System.out.println("ID dieses Characters: " + this.id);
+        if(properties.isEmpty()) System.out.println("properties ist leer");
+        properties.forEach((key, value) -> System.out.println(key + ": " + value));
+    }
 }

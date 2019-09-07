@@ -9,7 +9,7 @@ import java.util.Map;
 public class Config {
 
     public static Map<String, String> read(String configName) {
-        File file = new File("src/main/java/de/team33/lena/rpg/ressources/config.json");
+        File file = new File("ressources/config.json");
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Map<String, String>> configs = null;
         try {

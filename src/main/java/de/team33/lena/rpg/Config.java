@@ -2,18 +2,17 @@ package de.team33.lena.rpg;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 public class Config {
 
     public static Map<String, String> read(String configName) {
-        final File file = new File("ressources/config.json");
         final ObjectMapper objectMapper = new ObjectMapper();
-        try {
+        try (InputStream in = Config.class.getResourceAsStream("/config.json")) {
             //noinspection unchecked
-            final Map<String, Map<String, String>> configs = objectMapper.readValue(file, Map.class);
+            final Map<String, Map<String, String>> configs = objectMapper.readValue(in, Map.class);
             return configs.get(configName);
         } catch (IOException e) {
             throw new IllegalArgumentException("could not read <" + configName + ">", e);

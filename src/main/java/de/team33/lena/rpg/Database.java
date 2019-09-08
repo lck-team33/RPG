@@ -11,9 +11,15 @@ public class Database {
     public static Jdbi JDBI = Jdbi.create(newDataSource());
 
     private static DataSource newDataSource() {
-        final Map<String, String> config = Config.read("mySQL01");
-        //final Map<String, String> config = Config.read("postgreSQL01");
-        // wenn config jetzt leer ist, dann ist was schiefgelaufen... was tun?
+        final Map<String, String> config;
+        try {
+            config = Config.read("blubb");
+            //final Map<String, String> config = Config.read("mySQL01");
+            //final Map<String, String> config = Config.read("postgreSQL01");
+            // wenn config jetzt leer ist, dann ist was schiefgelaufen... was tun?
+        } catch (ConfigException e) {
+            throw new IllegalStateException(e.getMessage(), e);
+        }
 
         final String dataSourceFactoryName = config.get("dataSourceFactoryName");
         try {

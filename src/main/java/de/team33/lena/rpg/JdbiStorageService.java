@@ -4,22 +4,20 @@ import de.team33.lena.rpg.model.RpgCharacter;
 import org.jdbi.v3.core.Handle;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 public class JdbiStorageService implements StorageService {
 
     @Override
     public String insertCharacter(final RpgCharacter character) {
-        Database.JDBI.inTransaction(handle -> insertCharacter(handle, character.getId(), character.getProperties()));
+        Database.JDBI.useTransaction(handle -> insertCharacter(handle, character.getId(), character.getProperties()));
         return character.getId();
     }
 
-    private Object insertCharacter(Handle handle, String id, Map<String, String> properties) {
+    private void insertCharacter(Handle handle, String id, Map<String, String> properties) {
         insertCharacterAnchor(handle, id);
         for(Map.Entry<String, String> entry : properties.entrySet()){
             insertProperty(handle, id, entry);
         }
-        return null; // why? D:
     }
 
     private void insertCharacterAnchor(Handle handle, String id) {
@@ -41,10 +39,10 @@ public class JdbiStorageService implements StorageService {
 
     @Override
     public List<RpgCharacter> getCharacters(String key, String value) {
-        return Database.JDBI.inTransaction(handle -> getCharacterIDsByKeyAndValue(handle, key, value)); //besserer Name? D:
+        return Database.JDBI.withHandle(handle -> getCharactersByProperty(handle, key, value)); //besserer Name? D:
     }
 
-    private List<RpgCharacter> getCharacterIDsByKeyAndValue(Handle handle, String key, String value) {
+    private List<RpgCharacter> getCharactersByProperty(Handle handle, String key, String value) {
         List<RpgCharacter> characterList = new ArrayList<>();
         handle.createQuery("SELECT character_id FROM character_properties WHERE property = :key AND content = :value")
                 .bind("key", key)
@@ -52,12 +50,8 @@ public class JdbiStorageService implements StorageService {
                 .mapTo(String.class)
                 .stream()
                 .distinct()
-                .forEach(id -> characterList.add(getCharacterByID(id)));
+                .forEach(id -> characterList.add(getCharacterByID(handle, id)));
         return characterList;
-    }
-
-    private RpgCharacter getCharacterByID(String id) {
-        return Database.JDBI.inTransaction(handle -> getCharacterByID(handle, id)); //besserer Name? D:
     }
 
     private RpgCharacter getCharacterByID(Handle handle, String id){

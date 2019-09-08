@@ -16,6 +16,12 @@
             <organization>team33.de</organization>
             <organizationUrl>https://github.com/akk-team33/</organizationUrl>
         </developer>
+        <developer>
+            <name>Lena Kaindl</name>
+            <email>lck@team33.de</email>
+            <organization>team33.de</organization>
+            <organizationUrl>https://github.com/akk-team33/</organizationUrl>
+        </developer>
     </developers>
 
     <dependencies>
@@ -81,7 +87,7 @@
         <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>42.2.5</version>
+        <version>42.2.6</version>
     </dependency>
 
     </dependencies>

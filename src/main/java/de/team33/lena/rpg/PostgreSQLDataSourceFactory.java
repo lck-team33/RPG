@@ -15,7 +15,8 @@ public class PostgreSQLDataSourceFactory implements Function<Map<String, String>
         result.setServerName(config.get("dbHost")); // den timecode musste ich rausnehmen ... schlimm? D:
         result.setPortNumber(Integer.parseInt(config.get("port"))); // blöd, weil exception möglich? D:
         result.setDatabaseName(config.get("dbScheme"));
-        result.setUser(config.get("username"));Optional.ofNullable(config.get("password"))
+        result.setUser(config.get("username"));
+        Optional.ofNullable(config.get("password"))
                 .filter(pwd -> !pwd.isEmpty())
                 .ifPresent(result::setPassword);
         return result;

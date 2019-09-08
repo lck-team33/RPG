@@ -9,14 +9,14 @@ import java.util.Map;
 public class Config {
 
     public static Map<String, String> read(String configName) {
-        File file = new File("ressources/config.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Map<String, String>> configs = null;
+        final File file = new File("ressources/config.json");
+        final ObjectMapper objectMapper = new ObjectMapper();
         try {
-            configs = objectMapper.readValue(file, Map.class);
+            //noinspection unchecked
+            final Map<String, Map<String, String>> configs = objectMapper.readValue(file, Map.class);
+            return configs.get(configName);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException("could not read <" + configName + ">", e);
         }
-        return configs.get(configName);
     }
 }
